@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using CommunityToolkit.Mvvm.Input;
-using Wpf.Ui.Violeta.Resources;
 using Wpf.Ui.Violeta.Win32;
+using Application = System.Windows.Application;
 
 namespace Keycap
 {

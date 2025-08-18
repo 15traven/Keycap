@@ -26,6 +26,7 @@ namespace Keycap
             };
             UxTheme.ApplyPreferredAppMode();
 
+            KeystrokeDispatcher.GetInstance();
             TrayIcon.GetInstance();
 
             _keystrokeWindow = new();
@@ -37,6 +38,7 @@ namespace Keycap
         private void Application_Exit(object sender, ExitEventArgs e)
         {
             _keystrokeWindow?.Close();
+            KeystrokeDispatcher.GetInstance().Dispose();
             TrayIcon.GetInstance().Dispose();
         }
     }
