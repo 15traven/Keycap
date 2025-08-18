@@ -1,6 +1,4 @@
 ﻿using Keycap.NativeMethods;
-using System;
-using System.Windows.Forms;
 using System.Windows.Input;
 using KeyEventArgs = System.Windows.Forms.KeyEventArgs;
 using KeyEventHandler = System.Windows.Forms.KeyEventHandler;

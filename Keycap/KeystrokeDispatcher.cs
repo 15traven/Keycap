@@ -1,7 +1,5 @@
 ﻿using Keycap.Helpers;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
-using System.Windows.Navigation;
 
 namespace Keycap
 {
@@ -41,11 +39,11 @@ namespace Keycap
             if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
             {
                 if (shift)
-                    return Config.NumberKeySymbols.TryGetValue(e.KeyCode, out var symbol) 
+                    return Config.NumberKeysSymbols.TryGetValue(e.KeyCode, out var symbol) 
                         ? symbol 
                         : string.Empty;
 
-                return Config.NumberKeyValues.TryGetValue(e.KeyCode, out var number) 
+                return Config.NumberKeysValues.TryGetValue(e.KeyCode, out var number) 
                     ? number 
                     : string.Empty;
             }
@@ -53,7 +51,7 @@ namespace Keycap
             if (e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z)
                 return shift || caps ? e.KeyCode.ToString() : e.KeyCode.ToString().ToLower();
 
-            if (Config.OemKeySymbols.TryGetValue(e.KeyCode, out var pair))
+            if (Config.OemKeysSymbols.TryGetValue(e.KeyCode, out var pair))
                 return shift ? pair.shift : pair.normal;
 
             return string.Empty;

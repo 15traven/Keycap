@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Keycap
+﻿namespace Keycap
 {
     internal class Config
     {
@@ -50,7 +44,7 @@ namespace Keycap
             { Keys.MediaPlayPause, "⏯" }
         };
 
-        public static Dictionary<Keys, string> NumberKeySymbols = new()
+        public static Dictionary<Keys, string> NumberKeysSymbols = new()
         {
             { Keys.D0, ")" },
             { Keys.D1, "!" },
@@ -64,7 +58,7 @@ namespace Keycap
             { Keys.D9, "(" },
         };
 
-        public static Dictionary<Keys, string> NumberKeyValues = new()
+        public static Dictionary<Keys, string> NumberKeysValues = new()
         {
             { Keys.D0, "0" },
             { Keys.D1, "1" },
@@ -78,7 +72,7 @@ namespace Keycap
             { Keys.D9, "9" },
         };
 
-        public static Dictionary<Keys, (string normal, string shift)> OemKeySymbols = new()
+        public static Dictionary<Keys, (string normal, string shift)> OemKeysSymbols = new()
         {
             { Keys.Oem1, (";", ":") },
             { Keys.Oem2, ("/", "?") },
