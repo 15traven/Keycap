@@ -1,13 +1,7 @@
 ﻿using Keycap.Helpers;
-using Keycap.NativeMethods;
-using System;
-using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
-using System.Linq;
-using System.Security.Permissions;
-using System.Text;
-using System.Threading.Tasks;
-
+using System.Windows.Navigation;
 
 namespace Keycap
 {
@@ -15,6 +9,8 @@ namespace Keycap
     {
         private static KeystrokeDispatcher? _instance;
         private GlobalKeyboardHook? _hook;
+
+        public static ObservableCollection<string> CapturedKeys { get; set; }
 
         protected KeystrokeDispatcher()
         {
@@ -29,7 +25,38 @@ namespace Keycap
 
         private void KeyDownEventHandler(object sender, KeyEventArgs e)
         {
-            Debug.WriteLine(e.KeyCode);
+            string key = Config.SpecialKeySymbols.TryGetValue(e.KeyCode, out var symbol)
+                ? symbol
+                : GetCharFromKey(e);
+
+            if (Config.SpecialKeySymbols.Values.Contains(key) && CapturedKeys.Any() && CapturedKeys.Last() == key) return;
+            CapturedKeys.Add(key);
+        }
+
+        private static string GetCharFromKey(KeyEventArgs e)
+        {
+            bool shift = e.Shift ? true : false;
+            bool caps = Control.IsKeyLocked(Keys.CapsLock);
+
+            if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
+            {
+                if (shift)
+                    return Config.NumberKeySymbols.TryGetValue(e.KeyCode, out var symbol) 
+                        ? symbol 
+                        : string.Empty;
+
+                return Config.NumberKeyValues.TryGetValue(e.KeyCode, out var number) 
+                    ? number 
+                    : string.Empty;
+            }
+
+            if (e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z)
+                return shift || caps ? e.KeyCode.ToString() : e.KeyCode.ToString().ToLower();
+
+            if (Config.OemKeySymbols.TryGetValue(e.KeyCode, out var pair))
+                return shift ? pair.shift : pair.normal;
+
+            return string.Empty;
         }
 
         internal static KeystrokeDispatcher GetInstance()

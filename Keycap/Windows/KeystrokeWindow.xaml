@@ -19,6 +19,25 @@
     Topmost="True"
     MouseDown="FluentWindow_MouseDown">
     <Grid>
-        
+        <ItemsControl x:Name="KeystrokeDisplay"
+                      ItemsSource="{Binding Keys}" 
+                      HorizontalAlignment="Stretch"
+                      VerticalAlignment="Center"
+                      IsTabStop="False"
+                      Margin="4,0,4,0">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <StackPanel Orientation="Horizontal"
+                                HorizontalAlignment="Center"/>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <TextBlock Text="{Binding}"
+                               Padding="2"
+                               FontSize="22"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </ui:FluentWindow>
