@@ -1,11 +1,9 @@
-﻿using System.IO;
-using System.Printing;
-using System.Reflection;
+﻿using Keycap.Helpers;
+using Keycap.NativeMethods;
+using Microsoft.Win32;
 using System.Windows;
-using System.Windows.Threading;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.Hosting;
-using Wpf.Ui;
+using Wpf.Ui.Appearance;
+using Wpf.Ui.Violeta.Appearance;
 
 namespace Keycap
 {
@@ -13,6 +11,18 @@ namespace Keycap
     {
         protected override void OnStartup(StartupEventArgs e)
         {
+            ThemeManager.Apply(ThemeHelper.AppsUseDarkTheme()
+                ? ApplicationTheme.Dark
+                : ApplicationTheme.Light);
+
+            SystemEvents.UserPreferenceChanged += (_, _) =>
+            {
+                ThemeManager.Apply(ThemeHelper.AppsUseDarkTheme()
+                    ? ApplicationTheme.Dark
+                    : ApplicationTheme.Light);
+            };
+            UxTheme.ApplyPreferredAppMode();
+
             TrayIcon.GetInstance();
             base.OnStartup(e);
         }

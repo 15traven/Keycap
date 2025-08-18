@@ -28,7 +28,8 @@ namespace Keycap
                         Header = "Quit",
                         Command = new RelayCommand(Application.Current.Shutdown)
                     }
-                ]
+                ],
+                IsVisible = true
             };
         }
 
