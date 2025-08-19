@@ -1,5 +1,7 @@
 ﻿using Keycap.Helpers;
+using Keycap.NativeMethods;
 using System.Collections.ObjectModel;
+using System.Text;
 
 namespace Keycap
 {
@@ -25,36 +27,34 @@ namespace Keycap
         {
             string key = Config.SpecialKeySymbols.TryGetValue(e.KeyCode, out var symbol)
                 ? symbol
-                : GetCharFromKey(e);
+                : TranslateKey(e);
 
             if (Config.SpecialKeySymbols.Values.Contains(key) && CapturedKeys.Any() && CapturedKeys.Last() == key) return;
+            if (key == string.Empty) return;
+
             CapturedKeys.Add(key);
         }
 
-        private static string GetCharFromKey(KeyEventArgs e)
+        private static string TranslateKey(KeyEventArgs e)
         {
-            bool shift = e.Shift ? true : false;
-            bool caps = Control.IsKeyLocked(Keys.CapsLock);
+            StringBuilder sb = new();
 
-            if (e.KeyCode >= Keys.D0 && e.KeyCode <= Keys.D9)
-            {
-                if (shift)
-                    return Config.NumberKeysSymbols.TryGetValue(e.KeyCode, out var symbol) 
-                        ? symbol 
-                        : string.Empty;
+            byte[] keyboardState = new byte[256];
+            User32.GetKeyboardState(keyboardState);
+            
+            IntPtr hwnd = User32.GetForegroundWindow();
+            uint threadId = User32.GetWindowThreadProcessId(hwnd, out _);
 
-                return Config.NumberKeysValues.TryGetValue(e.KeyCode, out var number) 
-                    ? number 
-                    : string.Empty;
-            }
+            int result = User32.ToUnicodeEx(
+                (uint)e.KeyCode,
+                User32.MapVirtualKey((uint)e.KeyCode, 0),
+                keyboardState,
+                sb,
+                sb.Capacity,
+                0,
+                User32.GetKeyboardLayout(threadId));
 
-            if (e.KeyCode >= Keys.A && e.KeyCode <= Keys.Z)
-                return shift || caps ? e.KeyCode.ToString() : e.KeyCode.ToString().ToLower();
-
-            if (Config.OemKeysSymbols.TryGetValue(e.KeyCode, out var pair))
-                return shift ? pair.shift : pair.normal;
-
-            return string.Empty;
+            return result <= 0 || e.Control ? e.KeyCode.ToString() : sb.ToString();
         }
 
         internal static KeystrokeDispatcher GetInstance()
