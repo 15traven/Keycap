@@ -14,11 +14,13 @@
     ExtendsContentIntoTitleBar="True"
     WindowCornerPreference="Round"
     WindowStyle="None"
+    Background="Transparent"
     ResizeMode="NoResize"
     ShowInTaskbar="False"
     Topmost="True"
     MouseDown="FluentWindow_MouseDown">
-    <Grid>
+    
+    <Grid x:Name="Wrapper">
         <ItemsControl x:Name="KeystrokeDisplay"
                       ItemsSource="{Binding Keys}" 
                       HorizontalAlignment="Stretch"

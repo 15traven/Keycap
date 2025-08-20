@@ -28,6 +28,7 @@ namespace Keycap
             UxTheme.ApplyPreferredAppMode();
 
             KeystrokeDispatcher.GetInstance();
+            Preferences.GetInstance();
             TrayIcon.GetInstance();
 
             _keystrokeWindow = new();

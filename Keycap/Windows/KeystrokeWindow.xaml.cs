@@ -3,6 +3,8 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.Windows.Input;
 using Wpf.Ui.Controls;
+using System.Windows.Media;
+using Brush = System.Windows.Media.Brush;
 
 namespace Keycap.Windows
 {
@@ -14,6 +16,9 @@ namespace Keycap.Windows
         {
             InitializeComponent();
             this.DataContext = this;
+
+            Wrapper.Background = new BrushConverter().ConvertFromString(Preferences.GetPreferencesSection().BezelColor) as Brush;
+            this.Foreground = new BrushConverter().ConvertFromString(Preferences.GetPreferencesSection().TextColor) as Brush;
 
             Keys.CollectionChanged += Keys_CollectionChanged;
             KeystrokeDispatcher.CapturedKeys = Keys;
